@@ -22,13 +22,11 @@
                 <Grid RowDefinitions="Auto, Auto"
                       ColumnDefinitions="*, *, 2*">
 
-                    <!-- Adultos -->
                     <Label Grid.Row="0" Grid.Column="0" Text="Adultos:" />
 
                     <Label Grid.Row="0" Grid.Column="1"
                            TextColor="{StaticResource Primary}"
-                           Text="{Binding Value}"
-                           BindingContext="{x:Reference stp_adultos}" />
+                           Text="{Binding Source={x:Reference stp_adultos}, Path=Value}" />
 
                     <Stepper Grid.Row="0" Grid.Column="2"
                              x:Name="stp_adultos"
@@ -36,13 +34,11 @@
                              Maximum="10"
                              Increment="1" />
 
-                    <!-- Crianças -->
                     <Label Grid.Row="1" Grid.Column="0" Text="Crianças:" />
 
                     <Label Grid.Row="1" Grid.Column="1"
                            TextColor="{StaticResource Primary}"
-                           Text="{Binding Value}"
-                           BindingContext="{x:Reference stp_criancas}" />
+                           Text="{Binding Source={x:Reference stp_criancas}, Path=Value}" />
 
                     <Stepper Grid.Row="1" Grid.Column="2"
                              x:Name="stp_criancas"
@@ -51,17 +47,16 @@
                              Increment="1" />
                 </Grid>
 
-                <!-- Suíte -->
                 <Label Text="Escolha sua Suíte" />
+
                 <Picker x:Name="pck_quarto"
                         Title="Selecione sua Acomodação">
-                    <!-- <Picker.Items>
+                    <Picker.Items>
                         <x:String>Suíte Luxo</x:String>
                         <x:String>Suíte Master</x:String>
-                    </Picker.Items> -->
+                    </Picker.Items>
                 </Picker>
 
-                <!-- Período -->
                 <Frame Padding="10" Margin="10" HasShadow="True">
                     <VerticalStackLayout>
                         <Label Text="Período da Estadia" />
@@ -84,13 +79,21 @@
                     </VerticalStackLayout>
                 </Frame>
 
-                <!-- Botão Avançar -->
-                <Button Text="Avançar"
-                        Clicked="OnAvancarClicked"
-                        BackgroundColor="{StaticResource Primary}"
-                        TextColor="White"
-                        CornerRadius="10"
-                        FontSize="Medium" />
+                <Button
+                    Text="Avançar"
+                    Clicked="Button_Clicked"
+                    BackgroundColor="{StaticResource Primary}"
+                    TextColor="White"
+                    CornerRadius="10"
+                    FontSize="Medium" />
+
+                <Button
+                    Text="Sobre"
+                    Clicked="Sobre_Clicked"
+                    BackgroundColor="{StaticResource Primary}"
+                    TextColor="White"
+                    CornerRadius="10"
+                    FontSize="Medium" />
 
             </VerticalStackLayout>
         </Frame>
