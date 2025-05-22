@@ -18,8 +18,20 @@ namespace MauiAppHotel.Views
 
         private void Button_Clicked(object sender, EventArgs e)
         {
-            // Exemplo: ação ao clicar no botão
-            DisplayAlert("Confirmação", "Hospedagem contratada com sucesso!", "OK");
+            try
+            {
+                Navigation.PushAsync(new HospedagemContratada());
+
+
+            }
+            catch (Exception ex)
+            {
+                DisplayAlert("Ops", ex.Message, "OK");
+            }
         }
     }
 }
+
+
+
+

@@ -79,6 +79,7 @@
         <!-- Botão Avançar -->
         <Button 
            Text="Avançar" 
+           Clicked="Button_Clicked"
            BackgroundColor="Black"
            HorizontalOptions="Center"
            TextColor="White"
