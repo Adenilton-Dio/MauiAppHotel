@@ -1,44 +1,50 @@
-namespace MauiAppHotel.Views;
+using System;
+using System.Collections.ObjectModel;
+using MauiAppHotel.Models;
 
-public partial class ContratacaoHospedagem : ContentPage
+namespace MauiAppHotel.Views
 {
-    App PropriedadesApp;
-
-    public ContratacaoHospedagem()
+    public partial class ContratacaoHospedagem : ContentPage
     {
-        InitializeComponent();
+        private ObservableCollection<QuartoModel> quartos;
 
-        PropriedadesApp = (App)Application.Current;
-
-        pck_quarto.ItemsSource = PropriedadesApp.lista_quartos;
-
-        dtpck_checkin.MinimumDate = DateTime.Now;
-        dtpck_checkin.MaximumDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month + 1, DateTime.Now.Day);
-
-        dtpck_checkout.MinimumDate = dtpck_checkin.Date.AddDays(1);
-        dtpck_checkout.MaximumDate = dtpck_checkin.Date.AddMonths(6);
-    }
-
-    private void Button_Clicked(object sender, EventArgs e)
-    {
-        try
+        public ContratacaoHospedagem()
         {
-            Navigation.PushAsync(new HospedagemContratada());
+            InitializeComponent();
 
+            // Inicializa a lista de quartos
+            quartos = new ObservableCollection<QuartoModel>
+            {
+                new QuartoModel { Descricao = "Suíte Luxo", Preco = 350 },
+                new QuartoModel { Descricao = "Suíte Premium", Preco = 500 }
+            };
+
+            // Define a fonte de dados do Picker
+            pck_quarto.ItemsSource = quartos;
+            pck_quarto.ItemDisplayBinding = new Binding("Descricao"); // Exibe a descrição no Picker
         }
-        catch (Exception ex)
+
+        private async void Button_Clicked(object sender, EventArgs e)
         {
-            DisplayAlert("Ops", ex.Message, "OK");
+            if (pck_quarto.SelectedItem is QuartoModel quartoSelecionado)
+            {
+                int adultos = (int)stp_adultos.Value;
+                int criancas = (int)stp_criancas.Value;
+                DateTime checkin = dtpck_checkin.Date;
+                DateTime checkout = dtpck_checkout.Date;
+
+                if (checkout <= checkin)
+                {
+                    await DisplayAlert("Erro", "Check-out deve ser após o Check-in.", "OK");
+                    return;
+                }
+
+                await Navigation.PushAsync(new ResumoReserva(quartoSelecionado, adultos, criancas, checkin, checkout));
+            }
+            else
+            {
+                await DisplayAlert("Erro", "Selecione uma acomodação.", "OK");
+            }
         }
-    }
-
-    private void dtpck_checkin_DateSelected(object sender, DateChangedEventArgs e)
-    {
-        DatePicker elemento = sender as DatePicker;
-
-        DateTime data_selecionada_checkin = elemento.Date;
-
-        dtpck_checkout.MinimumDate = data_selecionada_checkin.AddDays(1);
-        dtpck_checkout.MaximumDate = data_selecionada_checkin.AddMonths(6);
     }
 }
