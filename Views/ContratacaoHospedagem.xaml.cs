@@ -1,58 +1,58 @@
-using System;
-using System.Collections.ObjectModel;
 using MauiAppHotel.Models;
 
-namespace MauiAppHotel.Views
+namespace MauiAppHotel.Views;
+
+public partial class ContratacaoHospedagem : ContentPage
 {
-    public partial class ContratacaoHospedagem : ContentPage
+    App PropriedadesApp;
+
+    public ContratacaoHospedagem()
     {
-        private ObservableCollection<QuartoModel> quartos;
+        InitializeComponent();
 
+        PropriedadesApp = (App)Application.Current;
 
-        public ContratacaoHospedagem()
+        pck_quarto.ItemsSource = PropriedadesApp.lista_quartos;
+
+        dtpck_checkin.MinimumDate = DateTime.Now;
+        dtpck_checkin.MaximumDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month + 1, DateTime.Now.Day);
+
+        dtpck_checkout.MinimumDate = dtpck_checkin.Date.AddDays(1);
+        dtpck_checkout.MaximumDate = dtpck_checkin.Date.AddMonths(6);
+    }
+
+    private async void Button_Clicked(object sender, EventArgs e)
+    {
+        try
         {
-            InitializeComponent();
-
-         
-            quartos = new ObservableCollection<QuartoModel>
-                    {
-                        new QuartoModel { Descricao = "Suíte Luxo", Preco = 350 },
-                        new QuartoModel { Descricao = "Suíte Premium", Preco = 500 }
-                    };
-
-           
-            if (pck_quarto != null)
+            Hospedagem h = new Hospedagem
             {
-                pck_quarto.ItemsSource = quartos;
-                pck_quarto.ItemDisplayBinding = new Binding("Descricao"); // Exibe a descrição no Picker
-            }
+                QuartoSelecionado = (Quarto)pck_quarto.SelectedItem,
+                QuantidadeAdultos = Convert.ToInt32(stp_adultos.Value),
+                QuantidadeCriancas = Convert.ToInt32(stp_criancas.Value),
+                DataCheckIn = dtpck_checkin.Date,
+                DataCheckOut = dtpck_checkout.Date,
+            };
+
+            await Navigation.PushAsync(new HospedagemContratada()
+            {
+                BindingContext = h
+            });
+
         }
-
-      
-
-        private async void Button_Clicked(object sender, EventArgs e)
+        catch (Exception ex)
         {
-            if (pck_quarto?.SelectedItem is QuartoModel quartoSelecionado)
-            {
-                int adultos = (int)(stp_adultos?.Value ?? 0);
-                int criancas = (int)(stp_criancas?.Value ?? 0);
-                DateTime checkin = dtpck_checkin?.Date ?? DateTime.MinValue;
-                DateTime checkout = dtpck_checkout?.Date ?? DateTime.MinValue;
-
-                if (checkout <= checkin)
-                {
-                    await DisplayAlert("Erro", "Check-out deve ser após o Check-in.", "OK");
-                    return;
-                }
-                else
-                {
-                    await Navigation.PushAsync(new ResumoReserva(quartoSelecionado, adultos, criancas, checkin, checkout));
-                }
-            }
-            else
-            {
-                await DisplayAlert("Erro", "Selecione uma acomodação.", "OK");
-            }
+            await DisplayAlert("Ops", ex.Message, "OK");
         }
+    }
+
+    private void dtpck_checkin_DateSelected(object sender, DateChangedEventArgs e)
+    {
+        DatePicker elemento = sender as DatePicker;
+
+        DateTime data_selecionada_checkin = elemento.Date;
+
+        dtpck_checkout.MinimumDate = data_selecionada_checkin.AddDays(1);
+        dtpck_checkout.MaximumDate = data_selecionada_checkin.AddMonths(6);
     }
 }

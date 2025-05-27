@@ -1,15 +1,18 @@
-namespace MauiAppHotel.Views;
+using System;
+using Microsoft.Maui.Controls;
 
-public partial class HospedagemContratada : ContentPage
+namespace MauiAppHotel.Views
 {
-    public HospedagemContratada()
+    public partial class HospedagemContratada : ContentPage
     {
-        InitializeComponent();
-    }
+        public HospedagemContratada()
+        {
+            InitializeComponent();
+        }
 
-    private void Button_Clicked(object sender, EventArgs e)
-    {
-        // Add your logic here for the "Voltar" button click event
-        Navigation.PopAsync();
+        private void Button_Clicked(object sender, EventArgs e)
+        {
+            Navigation.PopAsync(); // volta para a página anterior
+        }
     }
 }

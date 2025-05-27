@@ -2,17 +2,37 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MauiAppHotel.MainPage"
-             Title="Home">
+             xmlns:local="clr-namespace:MauiAppHotel">
 
-    <VerticalStackLayout Padding="20" Spacing="20"
-                         VerticalOptions="Center" HorizontalOptions="Center">
+    <ScrollView>
+        <VerticalStackLayout Padding="30,0" Spacing="25">
 
-        <Label Text="Bem-vindo ao MauiAppHotel" FontSize="24" FontAttributes="Bold" />
+            <Image
+                Source="dotnet_bot.png"
+                HeightRequest="185"
+                Aspect="AspectFit"
+                SemanticProperties.Description="DotNet bot in a race car number eight" />
 
-        <Button Text="Ir para Pagamento"
-                Clicked="IrParaPagamento_Clicked"
-                BackgroundColor="Blue"
-                TextColor="White" />
+            <Label
+                Text="Hello, World!"
+                FontFamily="Kalam"
+                Style="{StaticResource Headline}"
+                SemanticProperties.HeadingLevel="Level1" />
 
-    </VerticalStackLayout>
+            <Label
+                Text="Welcome to&#x0a;.NET Multi-platform App UI"
+                Style="{StaticResource SubHeadline}"
+                SemanticProperties.HeadingLevel="Level2"
+                SemanticProperties.Description="Welcome to dot net Multi platform App UI" />
+
+            <Button
+                x:Name="CounterBtn"
+                Text="Click me"
+                SemanticProperties.Hint="Counts the number of times you click"
+                Clicked="OnCounterClicked"
+                HorizontalOptions="Fill" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+
 </ContentPage>

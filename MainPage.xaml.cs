@@ -1,31 +1,24 @@
-﻿using MauiAppHotel.Models;
-using MauiAppHotel.Views;
-
-namespace MauiAppHotel;
-
-public partial class MainPage : ContentPage
+﻿namespace MauiAppHotel
 {
-    public MainPage()
+    public partial class MainPage : ContentPage
     {
-        InitializeComponent();
-    }
+        int count = 0;
 
-    private async void IrParaPagamento_Clicked(object sender, EventArgs e)
-    {
-        // Criar um exemplo de quarto
-        var quartoExemplo = new QuartoModel
+        public MainPage()
         {
-            Descricao = "Suíte Luxo com vista para o mar",
-            Preco = (int)450.00
-        };
+            InitializeComponent(); // Correto: não deve ser sobrescrito!
+        }
 
-        // Dados para exemplo
-        int adultos = 2;
-        int criancas = 1;
-        DateTime checkin = DateTime.Today.AddDays(1);
-        DateTime checkout = DateTime.Today.AddDays(5);
+        private void OnCounterClicked(object sender, EventArgs e)
+        {
+            count++;
 
-        // Navegar para a página Pagamento
-        await Navigation.PushAsync(new Pagamento(quartoExemplo, adultos, criancas, checkin, checkout));
+            if (count == 1)
+                CounterBtn.Text = $"Clicked {count} time";
+            else
+                CounterBtn.Text = $"Clicked {count} times";
+
+            SemanticScreenReader.Announce(CounterBtn.Text);
+        }
     }
 }
